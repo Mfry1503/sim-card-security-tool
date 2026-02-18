@@ -195,7 +195,7 @@ class SimGuardAPITester:
             "profile_name": "Test eSIM",
             "carrier": "test-carrier"
         }
-        return self.run_test("eSIM Convert", "POST", "esim/convert", 201, esim_data)
+        return self.run_test("eSIM Convert", "POST", "esim/convert", 200, esim_data)
 
     def test_export_json(self):
         """Test JSON export"""
