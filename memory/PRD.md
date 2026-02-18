@@ -1,7 +1,7 @@
-# SimGuard Pro - SIM Card Security Tool
+# SimGuard Pro - Standalone SIM Card Security Tool
 
 ## Original Problem Statement
-Build an app that functions with USB smart card reader IC card reader, SIM card adapter/SIM breakout board that simplifies research and work as a security and program development engineer. A user-friendly interface with less code language, more common wordage, easy to read/write/clone and analyze data on personal SIMs and cards. Functions similar to pysim, MOBILedit but less complicated.
+Build an app that functions with USB smart card reader IC card reader, SIM card adapter/SIM breakout board that simplifies research and work as a security engineer. User-friendly interface, less code language, easy to read/write/clone and analyze data. Must be standalone - no ongoing costs or external service dependencies.
 
 ## User Choices
 - All primary functions (read, write, clone, analyze)
@@ -10,76 +10,79 @@ Build an app that functions with USB smart card reader IC card reader, SIM card 
 - No authentication (single-user personal tool)
 - Support for nano SIM and IC cards
 - Physical to eSIM conversion feature
+- **STANDALONE** - Must work independently without external paid services
 
-## User Personas
-1. **Security Researcher**: Needs to analyze SIM card security, test authentication algorithms, identify vulnerabilities
-2. **Telecom Engineer**: Manages SIM card data, clones profiles for testing, exports data for analysis
-3. **Developer**: Creates and tests eSIM profiles, writes contacts/SMS programmatically
+## Architecture
 
-## Core Requirements (Static)
-- PC/SC USB reader detection and connection
-- SIM card data reading (ICCID, IMSI, MSISDN, MCC, MNC, SPN)
-- Contact CRUD operations
-- SMS management
-- Card cloning functionality
-- Security analysis (auth algorithm, encryption detection)
-- Physical to eSIM conversion
-- JSON/CSV export/import
+### Tech Stack (All Local/Free)
+- **Backend**: FastAPI + pyscard (PC/SC)
+- **Frontend**: React + Tailwind + shadcn/ui
+- **Database**: MongoDB (local)
+- **QR Generation**: qrcode + Pillow (local)
+
+### Hardware Integration
+- Uses `pyscard` library for PC/SC protocol
+- Supports any standard USB smart card reader
+- APDU commands for SIM file access (EF_ICCID, EF_IMSI, EF_SPN, EF_ADN, EF_SMS)
 
 ## What's Been Implemented (Jan 2026)
 
 ### Backend (FastAPI)
-- ✅ Reader management endpoints (/api/readers, connect, disconnect)
-- ✅ Card management (/api/cards, read, delete)
-- ✅ Contact CRUD (/api/contacts)
-- ✅ SMS CRUD (/api/sms)
-- ✅ Clone operation (/api/clone)
-- ✅ Security analysis (/api/analyze/{card_id})
-- ✅ eSIM conversion (/api/esim/convert)
-- ✅ Export/Import (/api/export/{card_id}, /api/import)
-- ✅ Activity logging (/api/activity)
+- ✅ PC/SC reader detection (real hardware when pyscard installed)
+- ✅ APDU-based card reading (ICCID, IMSI, SPN, MCC, MNC)
+- ✅ Hardware status endpoint (`/api/hardware/status`)
+- ✅ Contact CRUD with SIM write capability
+- ✅ SMS management
+- ✅ Clone operation (data duplication)
+- ✅ Security analysis
+- ✅ Real QR code generation for eSIM profiles
+- ✅ JSON/CSV export/import
+- ✅ Activity logging
 
 ### Frontend (React)
-- ✅ Dashboard with quick actions and stats
-- ✅ Card Reader page with reader selection
-- ✅ Contact Manager with full CRUD
-- ✅ SMS Manager with inbox/sent/draft tabs
-- ✅ Clone Tool with wizard workflow
-- ✅ Security Analyzer with risk visualization
-- ✅ eSIM Converter with QR code display
-- ✅ Export/Import panel
+- ✅ Hardware mode indicator (DEMO vs HARDWARE badge)
+- ✅ Clear labeling of simulated vs real data
+- ✅ All management pages working
+- ✅ Real QR code display from backend
 
-### Design
-- Dark theme optimized for security work
-- Barlow Condensed + IBM Plex Sans + JetBrains Mono fonts
-- SIM card visual component
-- Hex viewer for raw data
-- Activity log panel
+## Deployment Modes
 
-## Note: MOCKED Features
-- PC/SC reader detection (simulated - real implementation needs pyscard)
-- Card read operation (returns demo data)
-- Security analysis (simulated results)
-- eSIM profile generation (simulated QR data)
+### 1. Demo Mode (Current - Web Preview)
+- No pyscard installed
+- Shows simulated readers/data
+- Clearly labeled as "[SIMULATED]"
+- Good for UI preview and testing
 
-## Prioritized Backlog
+### 2. Hardware Mode (Local Deployment)
+- Install pyscard + system dependencies
+- Real USB reader detection
+- Real card data extraction
+- Full standalone operation
 
-### P0 - Critical (Future)
-- Integrate actual pyscard library for real hardware communication
-- Implement APDU command execution for real card reading
+## Local Installation Requirements
 
-### P1 - High Priority
-- Real Ki/OPc extraction (requires specialized hardware)
-- Actual QR code generation library (qrcode)
-- File-based data persistence backup
+```bash
+# System dependencies
+sudo apt install pcscd libpcsclite-dev swig mongodb
 
-### P2 - Medium Priority
-- Multi-card comparison view
-- Batch operations for contacts/SMS
-- Card profile templates
-- Dark/light theme toggle
+# Python dependencies
+pip install pyscard qrcode pillow
 
-## Next Tasks
-1. User to connect actual PC/SC reader hardware for real testing
-2. Consider adding pyscard dependency for actual card communication
-3. Add QR code generation library for real eSIM QR codes
+# Connect USB reader, insert SIM, run app
+```
+
+## No External Dependencies
+
+✅ No Emergent credits required
+✅ No cloud API calls
+✅ No subscriptions
+✅ Runs 100% offline
+✅ Data stays local (MongoDB)
+✅ All processing local (no AI/LLM calls)
+
+## Next Tasks (for user)
+1. Download code from Emergent
+2. Follow README.md for local setup
+3. Install pyscard for real hardware
+4. Connect USB reader
+5. Start using with real SIM cards
