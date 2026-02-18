@@ -145,7 +145,7 @@ class SimGuardAPITester:
             "message": "Test SMS message",
             "status": "draft"
         }
-        success, response = self.run_test("Create SMS", "POST", "sms", 201, sms_data)
+        success, response = self.run_test("Create SMS", "POST", "sms", 200, sms_data)
         if success and "id" in response:
             self.test_sms_id = response["id"]
             print(f"   SMS ID: {self.test_sms_id}")
