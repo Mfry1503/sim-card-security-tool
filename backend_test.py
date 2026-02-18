@@ -74,9 +74,8 @@ class SimGuardAPITester:
         success, response = self.run_test(
             "Read Card", 
             "POST", 
-            "cards/read", 
-            200,
-            params={"reader_id": "reader-001"}
+            "cards/read?reader_id=reader-001", 
+            200
         )
         if success and "id" in response:
             self.test_card_id = response["id"]
