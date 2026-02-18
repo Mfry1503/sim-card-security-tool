@@ -1,18 +1,71 @@
-import { Usb, RefreshCw, Signal, SignalZero } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Usb, RefreshCw, Signal, SignalZero, Cpu, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import axios from "axios";
+
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 export default function ConnectionHeader({ readers, activeReader, onRefresh }) {
+  const [hardwareStatus, setHardwareStatus] = useState(null);
   const connectedReader = activeReader || readers.find(r => r.status === "connected");
+
+  useEffect(() => {
+    fetchHardwareStatus();
+  }, []);
+
+  const fetchHardwareStatus = async () => {
+    try {
+      const response = await axios.get(`${API}/hardware/status`);
+      setHardwareStatus(response.data);
+    } catch (error) {
+      console.error("Failed to fetch hardware status:", error);
+    }
+  };
 
   return (
     <header className="glass-panel px-4 py-3 flex items-center justify-between" data-testid="connection-header">
       <div className="flex items-center gap-4">
+        {/* Hardware Mode Indicator */}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-2">
+                <Cpu size={14} className={hardwareStatus?.hardware_mode ? "text-green-400" : "text-yellow-400"} />
+                <Badge 
+                  variant="outline" 
+                  className={`text-[10px] ${
+                    hardwareStatus?.hardware_mode 
+                      ? "text-green-400 border-green-500/30" 
+                      : "text-yellow-400 border-yellow-500/30"
+                  }`}
+                >
+                  {hardwareStatus?.hardware_mode ? "HARDWARE" : "DEMO"}
+                </Badge>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-xs">
+                {hardwareStatus?.hardware_mode 
+                  ? "Real hardware mode - pyscard installed" 
+                  : "Demo mode - Install pyscard for real hardware"}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
         {/* LED Indicator */}
         <div className="flex items-center gap-2">
           <div 
@@ -28,11 +81,13 @@ export default function ConnectionHeader({ readers, activeReader, onRefresh }) {
         {connectedReader && (
           <div className="hidden sm:flex items-center gap-3 pl-4 border-l border-border">
             <Usb size={16} className="text-secondary" />
-            <div>
+            <div className="flex items-center gap-2">
               <p className="text-sm font-medium">{connectedReader.name}</p>
-              <p className="text-xs text-muted-foreground font-mono">
-                ATR: {connectedReader.atr?.substring(0, 20)}...
-              </p>
+              {connectedReader.is_real && (
+                <Badge className="text-[9px] bg-green-500/20 text-green-400 border-green-500/30">
+                  REAL
+                </Badge>
+              )}
             </div>
           </div>
         )}
