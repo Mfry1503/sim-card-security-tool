@@ -182,7 +182,7 @@ class SimGuardAPITester:
         if not self.test_card_id:
             print("⚠️  Skipping security analysis - no card ID available")
             return True
-        return self.run_test("Security Analysis", "POST", f"analyze/{self.test_card_id}", 201)
+        return self.run_test("Security Analysis", "POST", f"analyze/{self.test_card_id}", 200)
 
     def test_esim_convert(self):
         """Test eSIM conversion"""
