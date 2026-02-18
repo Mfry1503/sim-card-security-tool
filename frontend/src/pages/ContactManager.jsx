@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -210,6 +211,9 @@ export default function ContactManager() {
                 <DialogTitle className="uppercase tracking-wide">
                   {editingContact ? "Edit Contact" : "New Contact"}
                 </DialogTitle>
+                <DialogDescription className="text-muted-foreground">
+                  {editingContact ? "Update contact information" : "Add a new contact to the SIM card phonebook"}
+                </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 py-4">
                 <div className="space-y-2">

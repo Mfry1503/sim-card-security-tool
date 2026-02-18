@@ -22,6 +22,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -188,6 +189,9 @@ export default function SMSManager() {
               <DialogTitle className="uppercase tracking-wide">
                 New Message
               </DialogTitle>
+              <DialogDescription className="text-muted-foreground">
+                Compose a new SMS message to save on the SIM card
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
