@@ -105,43 +105,63 @@ export default function EsimConverter() {
 
   const selectedCardData = cards.find(c => c.id === selectedCard);
 
-  // Simple QR Code SVG component (placeholder for actual QR)
-  const QRCodeDisplay = ({ data }) => (
-    <div className="qr-container mx-auto" data-testid="qr-code-display">
-      <div className="w-48 h-48 bg-white flex items-center justify-center relative">
-        {/* Simple QR-like pattern */}
-        <svg viewBox="0 0 100 100" className="w-full h-full p-2">
-          <rect x="0" y="0" width="100" height="100" fill="white"/>
-          <g fill="black">
-            {/* Corner patterns */}
-            <rect x="5" y="5" width="25" height="25"/>
-            <rect x="8" y="8" width="19" height="19" fill="white"/>
-            <rect x="11" y="11" width="13" height="13"/>
-            
-            <rect x="70" y="5" width="25" height="25"/>
-            <rect x="73" y="8" width="19" height="19" fill="white"/>
-            <rect x="76" y="11" width="13" height="13"/>
-            
-            <rect x="5" y="70" width="25" height="25"/>
-            <rect x="8" y="73" width="19" height="19" fill="white"/>
-            <rect x="11" y="76" width="13" height="13"/>
-            
-            {/* Data pattern (simplified) */}
-            {[...Array(8)].map((_, i) => (
-              [...Array(8)].map((_, j) => (
-                (i + j) % 2 === 0 && i > 1 && j > 1 && (i < 6 || j < 6) && (
-                  <rect key={`${i}-${j}`} x={35 + i*4} y={35 + j*4} width="3" height="3"/>
-                )
-              ))
-            ))}
-          </g>
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Smartphone size={24} className="text-primary" />
-        </div>
+  // Real QR Code component using base64 image from backend
+  const QRCodeDisplay = ({ profile }) => {
+    const [imgSrc, setImgSrc] = useState(null);
+    
+    useEffect(() => {
+      if (profile?.qr_image_base64) {
+        setImgSrc(`data:image/png;base64,${profile.qr_image_base64}`);
+      } else if (profile?.id) {
+        // Fetch from backend endpoint
+        setImgSrc(`${API}/esim/qr/${profile.id}`);
+      }
+    }, [profile]);
+
+    return (
+      <div className="qr-container mx-auto" data-testid="qr-code-display">
+        {imgSrc ? (
+          <img 
+            src={imgSrc} 
+            alt="eSIM QR Code" 
+            className="w-48 h-48"
+            onError={() => setImgSrc(null)}
+          />
+        ) : (
+          <div className="w-48 h-48 bg-white flex items-center justify-center relative">
+            {/* Fallback QR-like pattern */}
+            <svg viewBox="0 0 100 100" className="w-full h-full p-2">
+              <rect x="0" y="0" width="100" height="100" fill="white"/>
+              <g fill="black">
+                <rect x="5" y="5" width="25" height="25"/>
+                <rect x="8" y="8" width="19" height="19" fill="white"/>
+                <rect x="11" y="11" width="13" height="13"/>
+                
+                <rect x="70" y="5" width="25" height="25"/>
+                <rect x="73" y="8" width="19" height="19" fill="white"/>
+                <rect x="76" y="11" width="13" height="13"/>
+                
+                <rect x="5" y="70" width="25" height="25"/>
+                <rect x="8" y="73" width="19" height="19" fill="white"/>
+                <rect x="11" y="76" width="13" height="13"/>
+                
+                {[...Array(8)].map((_, i) => (
+                  [...Array(8)].map((_, j) => (
+                    (i + j) % 2 === 0 && i > 1 && j > 1 && (i < 6 || j < 6) && (
+                      <rect key={`${i}-${j}`} x={35 + i*4} y={35 + j*4} width="3" height="3"/>
+                    )
+                  ))
+                ))}
+              </g>
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Smartphone size={24} className="text-primary" />
+            </div>
+          </div>
+        )}
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="space-y-6 animate-fade-in" data-testid="esim-converter-page">
@@ -289,7 +309,7 @@ export default function EsimConverter() {
               </p>
             </div>
 
-            <QRCodeDisplay data={newProfile.qr_data} />
+            <QRCodeDisplay profile={newProfile} />
 
             <div className="bg-muted/50 p-4 rounded text-left space-y-3">
               <div className="flex justify-between items-center">
