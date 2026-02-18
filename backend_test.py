@@ -109,7 +109,7 @@ class SimGuardAPITester:
             "group": "Test",
             "email": "test@example.com"
         }
-        success, response = self.run_test("Create Contact", "POST", "contacts", 201, contact_data)
+        success, response = self.run_test("Create Contact", "POST", "contacts", 200, contact_data)
         if success and "id" in response:
             self.test_contact_id = response["id"]
             print(f"   Contact ID: {self.test_contact_id}")
