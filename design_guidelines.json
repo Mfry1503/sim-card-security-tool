@@ -1,0 +1,137 @@
+{
+  "project_name": "SimGuard Pro",
+  "design_philosophy": {
+    "identity": "The Cyber-Swiss Console",
+    "core_principles": [
+      "Precision over Decoration: Every pixel must serve data clarity.",
+      "Hardware Tactility: The UI should feel like a physical extension of the reader.",
+      "Dark by Default: Optimized for low-light security operations centers.",
+      "Humanized Tech: Use common language (e.g., 'Card ID' vs 'ICCID') where possible, or offer tooltips."
+    ],
+    "vibe": "Professional, Secure, Industrial, High-Performance"
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Barlow Condensed, sans-serif",
+      "body": "IBM Plex Sans, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "scale": {
+      "h1": "text-4xl md:text-5xl font-bold tracking-tight uppercase",
+      "h2": "text-2xl md:text-3xl font-semibold tracking-tight",
+      "h3": "text-xl font-medium tracking-normal text-muted-foreground",
+      "body": "text-sm md:text-base leading-relaxed",
+      "mono_sm": "text-xs font-mono tracking-wide",
+      "mono_lg": "text-sm font-mono tracking-wide"
+    }
+  },
+  "colors": {
+    "theme": "dark",
+    "palette": {
+      "background": "#0f172a",
+      "surface": "#1e293b",
+      "surface_highlight": "#334155",
+      "border": "#334155",
+      "primary": "#7c3aed",
+      "primary_foreground": "#ffffff",
+      "secondary": "#06b6d4",
+      "accent_success": "#10b981",
+      "accent_warning": "#f59e0b",
+      "accent_danger": "#f43f5e",
+      "text_primary": "#f8fafc",
+      "text_secondary": "#94a3b8",
+      "text_muted": "#64748b"
+    },
+    "usage": {
+      "reader_connected": "border-accent-success bg-accent-success/10 text-accent-success",
+      "reader_disconnected": "border-muted bg-muted/10 text-muted-foreground",
+      "reader_busy": "border-accent-warning bg-accent-warning/10 text-accent-warning animate-pulse",
+      "sim_chip_gold": "bg-gradient-to-br from-yellow-400 to-yellow-600"
+    }
+  },
+  "layout_system": {
+    "grid_mode": "Bento Mode B (High Density)",
+    "container_padding": "p-4 md:p-6 lg:p-8",
+    "gap_size": "gap-4 md:gap-6",
+    "border_radius": "rounded-none md:rounded-sm lg:rounded-md",
+    "structure": [
+      "Top Bar: Hardware Connection Status (Always Visible)",
+      "Left Sidebar: Navigation (Sim Tools, Contact Manager, SMS, Clone, eSIM)",
+      "Main Area: Context-specific Workspace",
+      "Right Panel (Collapsible): Live Activity Log / Hex Dump View"
+    ]
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-primary hover:bg-primary/90 text-white shadow-[0_0_15px_rgba(124,58,237,0.3)] uppercase tracking-wider font-bold",
+      "secondary": "bg-transparent border border-border hover:bg-white/5 text-text_primary uppercase tracking-wider font-medium",
+      "destructive": "bg-accent_danger/10 border border-accent_danger/50 text-accent_danger hover:bg-accent_danger/20 uppercase tracking-wider"
+    },
+    "cards": {
+      "base": "bg-surface border border-border/50 shadow-sm",
+      "interactive": "hover:border-primary/50 transition-colors cursor-pointer group relative overflow-hidden",
+      "highlight_effect": "Make the top border colored based on card type (Blue for Info, Green for Success, Red for Danger)"
+    },
+    "inputs": {
+      "style": "bg-background border-border focus:border-primary focus:ring-1 focus:ring-primary/50 font-mono text-sm"
+    },
+    "visual_enhancers": {
+      "glass_panel": "backdrop-blur-xl bg-surface/80 border-b border-white/5",
+      "tech_lines": "bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]",
+      "status_dot": "w-2 h-2 rounded-full inline-block mr-2"
+    }
+  },
+  "custom_components_specs": {
+    "SimCardVisual": {
+      "description": "A CSS-only representation of a SIM card that flips to show technical details.",
+      "specs": "Aspect ratio of a SIM. Gold chip contacts using CSS gradients. Rounded corner on one side."
+    },
+    "HexViewer": {
+      "description": "A component to view raw data from the card.",
+      "specs": "Monospace font, alternating row colors, highlight on hover."
+    },
+    "ConnectionHeader": {
+      "description": "Sticky header showing reader status.",
+      "specs": "Must look like a physical display on a device. Green LED for connected."
+    }
+  },
+  "assets": {
+    "icons_library": "lucide-react",
+    "required_icons": [
+      "Cpu (for Chip/Processing)",
+      "SimCard (if available, else Smartphone)",
+      "Usb (for Reader)",
+      "ShieldCheck (for Security)",
+      "Activity (for Logs)",
+      "Repeat (for Clone)",
+      "QrCode (for eSIM)",
+      "Trash2 (Delete)",
+      "Save (Write)",
+      "RefreshCw (Read/Sync)"
+    ],
+    "image_urls": {
+      "sim_macro_bg": "https://images.pexels.com/photos/33277478/pexels-photo-33277478.jpeg",
+      "cyber_lock_bg": "https://images.pexels.com/photos/39584/censorship-limitations-freedom-of-expression-restricted-39584.jpeg"
+    }
+  },
+  "accessibility_rules": {
+    "contrast": "Ensure all text on dark backgrounds is at least WCAG AA (4.5:1). Use 'text-gray-300' not 'text-gray-500'.",
+    "focus_states": "Visible ring-2 ring-primary ring-offset-2 ring-offset-background on all interactive elements.",
+    "aria_labels": "All icon-only buttons must have aria-label."
+  },
+  "motion_guidelines": {
+    "speed": "Fast (150ms)",
+    "easing": "ease-out",
+    "types": [
+      "Fade in for new data loads",
+      "Slide over for details panels",
+      "Pulse for active hardware reading operations"
+    ]
+  },
+  "universal_guidelines": [
+    "DO NOT use generic gradients. Use solid colors or subtle noise textures.",
+    "DO NOT center text in data tables. Align numbers right, text left.",
+    "Use 'sonner' for all system notifications (Success/Error).",
+    "Always check for 'reader_connected' state before allowing Write/Clone operations."
+  ]
+}
