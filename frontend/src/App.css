@@ -1,34 +1,227 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
+/* SimGuard Pro - Main App Styles */
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-.App-header {
-    background-color: #0f0f10;
+.app-container {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    width: 240px;
+    background: hsl(var(--card));
+    border-right: 1px solid hsl(var(--border));
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: hsl(var(--muted-foreground));
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: all 0.15s ease-out;
+    border-left: 2px solid transparent;
+}
+
+.sidebar-nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: hsl(var(--foreground));
+}
+
+.sidebar-nav-item.active {
+    background: rgba(124, 58, 237, 0.1);
+    color: hsl(var(--primary));
+    border-left-color: hsl(var(--primary));
+}
+
+/* Main content area */
+.main-content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+/* Quick action cards */
+.quick-action-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.15s ease-out;
+}
+
+.quick-action-card:hover {
+    border-color: hsl(var(--primary));
+    background: rgba(124, 58, 237, 0.05);
+}
+
+/* Data display panels */
+.data-panel {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+}
+
+.data-panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid hsl(var(--border));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.data-panel-content {
+    padding: 20px;
+}
+
+/* Activity log */
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid hsl(var(--border));
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+/* Empty states */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: hsl(var(--muted-foreground));
+}
+
+/* Form styles */
+.form-section {
+    margin-bottom: 24px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: hsl(var(--muted-foreground));
+}
+
+/* Wizard steps */
+.wizard-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: hsl(var(--muted));
+    margin-bottom: 8px;
+}
+
+.wizard-step.completed {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.wizard-step.active {
+    background: rgba(124, 58, 237, 0.1);
+    border: 1px solid hsl(var(--primary));
+}
+
+.wizard-step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+    font-weight: 600;
+    background: hsl(var(--muted-foreground));
+    color: hsl(var(--background));
 }
 
-.App-link {
-    color: #61dafb;
+.wizard-step.completed .wizard-step-number {
+    background: hsl(var(--success));
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
+.wizard-step.active .wizard-step-number {
+    background: hsl(var(--primary));
+}
+
+/* Security analysis */
+.risk-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.risk-low {
+    background: rgba(16, 185, 129, 0.2);
+    color: hsl(var(--success));
+}
+
+.risk-medium {
+    background: rgba(245, 158, 11, 0.2);
+    color: hsl(var(--warning));
+}
+
+.risk-high {
+    background: rgba(244, 63, 94, 0.2);
+    color: hsl(var(--destructive));
+}
+
+.risk-critical {
+    background: rgba(244, 63, 94, 0.3);
+    color: hsl(var(--destructive));
+    animation: pulse 1.5s infinite;
+}
+
+/* eSIM QR code container */
+.qr-container {
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 64px;
     }
-    to {
-        transform: rotate(360deg);
+    
+    .sidebar-nav-item span {
+        display: none;
+    }
+    
+    .main-content {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -240px;
+        z-index: 50;
+        height: 100vh;
+        transition: left 0.3s ease-out;
+    }
+    
+    .sidebar.open {
+        left: 0;
+        width: 240px;
+    }
+    
+    .sidebar.open .sidebar-nav-item span {
+        display: inline;
     }
 }
